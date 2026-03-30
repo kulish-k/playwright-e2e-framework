@@ -1,16 +1,23 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { NavbarComponent } from '../components/NavbarComponent';
 
 export class DashboardPage extends BasePage {
   readonly pageTitle: Locator;
   readonly dataTableRows: Locator;
-  readonly shoppingCart: Locator;
+  public readonly navbar: NavbarComponent; // COM pattern implementation
 
   constructor(page: Page) {
     super(page);
-    this.pageTitle = page.getByTestId('title');
+    // Prefer A11y role attributes where possible over generic IDs.
+    this.pageTitle = page.getByText('Products', { exact: true });
+    
+    // Inventory items structurally act like lists/articles in standard semantic HTML
+    // However, SauceDemo's DOM uses simple 'inventory_item' classes. Let's use getByTestId or role
     this.dataTableRows = page.getByTestId('inventory-item');
-    this.shoppingCart = page.getByTestId('shopping-cart-link');
+    
+    // Component injection preventing method bloat on global page
+    this.navbar = new NavbarComponent(page);
   }
 
   async goto() {
@@ -20,10 +27,11 @@ export class DashboardPage extends BasePage {
   async verifyIsOnDashboard() {
     await expect(this.page).toHaveURL(/.*\/inventory.html/);
     await expect(this.pageTitle).toBeVisible();
-    await expect(this.shoppingCart).toBeVisible();
+    await expect(this.navbar.shoppingCartButton).toBeVisible();
   }
 
   async verifyDataLoaded() {
+    // Uses expect with custom timeout natively instead of brittle hard waits or custom sleep
     await expect(this.dataTableRows.first()).toBeVisible({ timeout: 15000 });
   }
 
