@@ -59,6 +59,14 @@ Designed natively to integrate within modern deployment workflows (GitHub Action
 
 This architecture bridges the gap between a standard testing script and a persistent Engineering Asset. 
 By utilizing Component Object Models, Hybrid UI API Interception, and deterministic W3C-selectors, this framework offers **Massive Scalability** while retaining a uniquely low overhead. It eliminates the traditional anxiety associated with maintaining flaky tests, transforming QA operations into a rapid, unblockable asset for any SaaS company.
+## 🛠️ Hybrid Testing Strategy (UI + API)
+
+Relying entirely upon the DOM is generally a mistake. This framework demonstrates *Hybrid API/UI Architecture*, merging the speed of API endpoints with the visual confidence of E2E browsers. 
+
+By strategically invoking the Playwright `request` tier (`tests/api/` and `tests/hybrid/`):
+- **Faster Validation:** Complex data setups (creating users, shopping carts, etc.) are executed directly against APIs in milliseconds, isolating the UI purely for rendering verifications.
+- **Reduced UI Dependency:** E2E suites typically shatter when a single intermediate UI view changes. Validating state directly via backend APIs allows tests to securely assert business logic (e.g., `checkout.spec.ts`) even if the DOM is completely broken.
+- **Real-World SaaS Testing Approach:** We actively utilize `apiLogin.spec.ts` to seamlessly authenticate a Session JWT against a backend explicitly, map it to the browser's raw cookies, and bypass the Login UI entirely—exactly matching the robust architectures expected inside Silicon Valley E2E environments.
 
 ---
 *Authored and Designed by [Kulish Kulshrestha](https://github.com/kulish-k) - QA Automation Architect*
