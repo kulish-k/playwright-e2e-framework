@@ -2,14 +2,12 @@ import { test, expect } from '../../src/fixtures/testFixtures';
 
 test.describe('Dashboard Interactions @dashboard', () => {
 
-  test.beforeEach(async ({ loginPage, testUser }) => {
-    // Standard setup: Pre-authenticate seamlessly before testing Dashboard
-    await loginPage.goto();
-    await loginPage.login(testUser.email, testUser.pass);
-  });
-
   test('Validates core dashboard elements load reliably', async ({ dashboardPage }) => {
-    // We already arrive at Dashboard via the beforeEach redirect
+    // Navigate directly. Because of our global.setup project mapping in playwright.config
+    // the UI is already authenticated via auth.json injection!
+    await dashboardPage.goto();
+    
+    // We arrive at Dashboard and verify elements natively
     await dashboardPage.verifyIsOnDashboard();
     
     // Validates data loaded (waits for spinners to clear if any)
