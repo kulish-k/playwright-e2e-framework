@@ -1,0 +1,19 @@
+{
+  "roles": {
+    "standard": {
+      "username": "standard_user",
+      "password": "secret_sauce",
+      "level": "user"
+    },
+    "lockedOut": {
+      "username": "locked_out_user",
+      "password": "secret_sauce",
+      "level": "restricted"
+    },
+    "problem": {
+      "username": "problem_user",
+      "password": "secret_sauce",
+      "level": "manager"
+    }
+  }
+}
