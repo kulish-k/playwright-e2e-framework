@@ -54,10 +54,10 @@ export default defineConfig({
       testIgnore: [/.*api\.spec\.ts/], // Ignore bare API tests here
       use: {
         ...devices['Desktop Chrome'],
-        // We instruct UI tests to rely upon the globally populated session!
-        storageState: 'src/setup/auth.json',
+        // Standard worker execution uses the User role by default
+        storageState: 'src/setup/userStorageState.json',
       },
-      dependencies: ['setup'], // Forces `setup` project to execute and populate `auth.json` first
+      dependencies: ['setup'], // Forces `setup` project to execute sequentially first
     },
     
     // --- 3. API & Microservices Tier ---
